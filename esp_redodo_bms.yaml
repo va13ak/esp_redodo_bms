@@ -1,9 +1,7 @@
 logger:
   level: DEBUG
   logs:
-    # Приховуємо сміття від сканера, щоб він не забивав лог
     esp32_ble_tracker: ERROR 
-    # Все інше (BMS, WiFi, API) буде працювати в режимі DEBUG
 
 esphome:
   name: esp-redodo-bms
@@ -11,7 +9,7 @@ esphome:
 external_components:
   - source:
       type: local
-      path: custom_components
+      path: external_components
 
 esp32:
   board: esp32dev
@@ -42,38 +40,77 @@ ble_client:
 
 button:
   - platform: template
-    name: "Force Read BMS"
+    name: "Redodo Force Update"
+    icon: "mdi:refresh"
     on_press:
       - lambda: |-
-          // Замість сирого BLE-запиту, просто просимо компонент виконати своє оновлення
           id(my_bms).update();
-          ESP_LOGI("custom", "Forced BMS update via component");
+          ESP_LOGI("custom", "Forced BMS update requested");
 
-# 1. Основний блок (HUB) - відповідає за зв'язок BLE
+  - platform: restart
+    name: "Redodo Monitor ESP32 Restart"
+    icon: "mdi:restart"
+    
 jbd_bms_ble:
   id: my_bms
   ble_client_id: redodo_bms
   update_interval: 15s
 
-# 2. Блок сенсорів - вони прив'язуються до хаба автоматично
 sensor:
   - platform: jbd_bms_ble
     voltage:
       name: "Redodo Total Voltage"
+      filters:
+        - throttle: 5s
     current:
       name: "Redodo Current"
+      filters:
+        - throttle: 5s
     temperature:
       name: "Redodo Temp 1"
+      filters:
+        - throttle: 5s
     soc:
       name: "Redodo SOC"
+      filters:
+        - throttle: 5s
     cycles:
       name: "Redodo Cycles"
+      filters:
+        - throttle: 5s
     cells:
       - name: "Redodo Cell 1 Voltage"
+        filters:
+          - throttle: 5s
       - name: "Redodo Cell 2 Voltage"
+        filters:
+          - throttle: 5s
       - name: "Redodo Cell 3 Voltage"
+        filters:
+          - throttle: 5s
       - name: "Redodo Cell 4 Voltage"
+        filters:
+          - throttle: 5s
       - name: "Redodo Cell 5 Voltage"
+        filters:
+          - throttle: 5s
       - name: "Redodo Cell 6 Voltage"
+        filters:
+          - throttle: 5s
       - name: "Redodo Cell 7 Voltage"
+        filters:
+          - throttle: 5s
       - name: "Redodo Cell 8 Voltage"
+        filters:
+          - throttle: 5s
+
+web_server:
+  port: 80
+
+#dashboard_import:
+#  package_import_url: https://github.com/va13ak/esp_redodo_bms
+
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: "Redodo Monitor IP"
