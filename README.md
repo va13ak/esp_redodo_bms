@@ -1,16 +1,16 @@
-# ESPHome Redodo BMS Monitor (via BLE)
+# ESPHome JBD/Redodo BMS Monitor (BLE)
 
-This project allows you to monitor a **Redodo 24V 100Ah LiFePO4 Battery** (or any JBD-based BMS) using an ESP32 and ESPHome via Bluetooth Low Energy (BLE).
+This project provides a robust ESPHome integration for monitoring **Redodo LiFePO4 batteries** and other **JBD-based BMS** (Jiabaida) via Bluetooth Low Energy. It is compatible with both **12V and 24V** configurations.
+
+## Supported Hardware
+* **Batteries**: Redodo 12V/24V LiFePO4 with Bluetooth, or any battery using JBD BMS.
+* **Controller**: ESP32 (DevKit V1, WROOM, etc.) - Bluetooth is required.
 
 ## Features
-* 📊 Real-time Total Voltage & Current monitoring.
-* 🔋 State of Charge (SOC) and Cycle count.
-* 🌡️ Temperature monitoring.
-* 🧬 Individual Cell Voltage reporting (8 cells for 24V).
-
-## Hardware
-* **ESP32** (DevKit V1 or similar).
-* **Redodo 24V 100Ah LiFePO4 Battery** with integrated Bluetooth.
+* 📊 **Dynamic Cell Monitoring**: Automatically reports voltage for each cell (4S for 12V, 8S for 24V).
+* 🔋 **Full Battery Stats**: Total Voltage, Current, SOC (%), and Cycle count.
+* 🌡️ **Health & Safety**: Temperature monitoring and BMS status.
+* 🛠️ **Diagnostics**: Integrated Web Interface for standalone monitoring without Home Assistant.
 
 ## How to use
 1. Copy `secrets.yaml.example` to `secrets.yaml`.
@@ -18,6 +18,11 @@ This project allows you to monitor a **Redodo 24V 100Ah LiFePO4 Battery** (or an
 3. Flash the ESP32:
    ```bash
    esphome run esp_redodo_bms.yaml
+
+## 🏠 Integration
+* **Home Assistant**: Automated discovery via the native ESPHome API.
+* **Other Systems**: Supports MQTT, Prometheus, and REST API for integration with Node-RED, OpenHAB, or custom dashboards.
+* **Standalone**: Real-time dashboard available via the ESP32's web interface (IP address).
 
 ## Credits & Acknowledgments
 * This project is based on the [BMS_BLE-HA](https://github.com/patman15/BMS_BLE-HA/) repository by **patman15**.
