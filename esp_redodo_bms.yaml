@@ -1,0 +1,79 @@
+logger:
+  level: DEBUG
+  logs:
+    # Приховуємо сміття від сканера, щоб він не забивав лог
+    esp32_ble_tracker: ERROR 
+    # Все інше (BMS, WiFi, API) буде працювати в режимі DEBUG
+
+esphome:
+  name: esp-redodo-bms
+
+external_components:
+  - source:
+      type: local
+      path: custom_components
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+    advanced:
+      minimum_chip_revision: "3.1"
+
+wifi:
+  networks:
+    - ssid: !secret wifi_ssid
+      password: !secret wifi_password
+  power_save_mode: NONE
+  manual_ip:
+    static_ip: !secret wifi_manual_ip
+    gateway: !secret wifi_gateway
+    subnet: 255.255.255.0
+
+api:
+ota:
+  - platform: esphome
+
+esp32_ble_tracker:
+
+ble_client:
+  - mac_address: !secret ble_client_mac_address
+    id: redodo_bms
+
+button:
+  - platform: template
+    name: "Force Read BMS"
+    on_press:
+      - lambda: |-
+          // Замість сирого BLE-запиту, просто просимо компонент виконати своє оновлення
+          id(my_bms).update();
+          ESP_LOGI("custom", "Forced BMS update via component");
+
+# 1. Основний блок (HUB) - відповідає за зв'язок BLE
+jbd_bms_ble:
+  id: my_bms
+  ble_client_id: redodo_bms
+  update_interval: 15s
+
+# 2. Блок сенсорів - вони прив'язуються до хаба автоматично
+sensor:
+  - platform: jbd_bms_ble
+    voltage:
+      name: "Redodo Total Voltage"
+    current:
+      name: "Redodo Current"
+    temperature:
+      name: "Redodo Temp 1"
+    soc:
+      name: "Redodo SOC"
+    cycles:
+      name: "Redodo Cycles"
+    cells:
+      - name: "Cell 1"
+      - name: "Cell 2"
+      - name: "Cell 3"
+      - name: "Cell 4"
+      - name: "Cell 5"
+      - name: "Cell 6"
+      - name: "Cell 7"
+      - name: "Cell 8"
