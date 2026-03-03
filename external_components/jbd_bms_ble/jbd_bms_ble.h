@@ -14,10 +14,16 @@ class JbdBmsBle : public PollingComponent, public ble_client::BLEClientNode {
   void set_current_sensor(sensor::Sensor *s) { current_sensor_ = s; }
   
   // ВИПРАВЛЕНО: назва має бути повною, як у sensor.py
-  void set_temperature_sensor(sensor::Sensor *s) { temp_sensor_ = s; } 
-  
+  void set_cell_temperature_sensor(sensor::Sensor *s) { cell_temp_sensor_ = s; }
+  void set_mosfet_temperature_sensor(sensor::Sensor *s) { mosfet_temp_sensor_ = s; }
+
   void set_soc_sensor(sensor::Sensor *s) { soc_sensor_ = s; }
+  void set_soh_sensor(sensor::Sensor *s) { soh_sensor_ = s; }
   void set_cycles_sensor(sensor::Sensor *s) { cycles_sensor_ = s; }
+  void set_equilibriumstate_sensor(sensor::Sensor *s) { equilibriumstate_sensor_ = s; }
+  void set_batterystate_sensor(sensor::Sensor *s) { batterystate_sensor_ = s; }
+  void set_charge_sensor(sensor::Sensor *s) { charge_sensor_ = s; }
+  void set_capacity_sensor(sensor::Sensor *s) { capacity_sensor_ = s; }
   void set_cell_sensor(size_t index, sensor::Sensor *s) {
     if (index < 8) this->cells_[index] = s;
   }
@@ -33,9 +39,15 @@ class JbdBmsBle : public PollingComponent, public ble_client::BLEClientNode {
   
   sensor::Sensor *voltage_sensor_{nullptr};
   sensor::Sensor *current_sensor_{nullptr};
-  sensor::Sensor *temp_sensor_{nullptr};
+  sensor::Sensor *cell_temp_sensor_{nullptr};
+  sensor::Sensor *mosfet_temp_sensor_{nullptr};
   sensor::Sensor *soc_sensor_{nullptr};
+  sensor::Sensor *soh_sensor_{nullptr};
   sensor::Sensor *cycles_sensor_{nullptr};
+  sensor::Sensor *equilibriumstate_sensor_{nullptr};
+  sensor::Sensor *batterystate_sensor_{nullptr};
+  sensor::Sensor *charge_sensor_{nullptr};
+  sensor::Sensor *capacity_sensor_{nullptr};
   sensor::Sensor *cells_[8]{nullptr};
   
   ble_client::BLECharacteristic *char_write_{nullptr};

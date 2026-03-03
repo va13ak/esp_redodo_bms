@@ -56,15 +56,27 @@ void JbdBmsBle::decode_data_(const std::vector<uint8_t> &data) {
 
     float voltage = this->get_int(data, 12, 2, false) / 1000.0f;
     float current = this->get_int(data, 48, 4, true) / 1000.0f;
-    float temp = (float)this->get_int(data, 52, 2, false);
+    float cell_temp = (float)this->get_int(data, 52, 2, false);
+    float mosfet_temp = (float)this->get_int(data, 54, 2, false);
     float soc = (float)this->get_int(data, 90, 2, false);
+    float soh = (float)this->get_int(data, 92, 4, false);
     uint32_t cycles = this->get_int(data, 96, 4, false);
+    uint32_t equilibriumState = this->get_int(data, 84, 4, false);
+    uint32_t batteryState = this->get_int(data, 88, 2, false);
+    float charge = this->get_int(data, 62, 2, false) / 100.0f;
+    float capacity = this->get_int(data, 64, 2, false) / 100.0f;
 
     if (this->voltage_sensor_) this->voltage_sensor_->publish_state(voltage);
     if (this->current_sensor_) this->current_sensor_->publish_state(current);
-    if (this->temp_sensor_) this->temp_sensor_->publish_state(temp);
+    if (this->cell_temp_sensor_) this->cell_temp_sensor_->publish_state(cell_temp);
+    if (this->mosfet_temp_sensor_) this->mosfet_temp_sensor_->publish_state(mosfet_temp);
     if (this->soc_sensor_) this->soc_sensor_->publish_state(soc);
+    if (this->soh_sensor_) this->soh_sensor_->publish_state(soh);
     if (this->cycles_sensor_) this->cycles_sensor_->publish_state(cycles);
+    if (this->equilibriumstate_sensor_) this->equilibriumstate_sensor_->publish_state(equilibriumState);
+    if (this->batterystate_sensor_) this->batterystate_sensor_->publish_state(batteryState);
+    if (this->charge_sensor_) this->charge_sensor_->publish_state(charge);
+    if (this->capacity_sensor_) this->capacity_sensor_->publish_state(capacity);
 
     for (int i = 0; i < 8; i++) {
         if (this->cells_[i]) {
