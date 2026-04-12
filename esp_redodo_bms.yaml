@@ -57,25 +57,58 @@ jbd_bms_ble:
   update_interval: 15s
 
 sensor:
+  - platform: template
+    name: "Redodo Power"
+    id: redodo_power
+    unit_of_measurement: W
+    update_interval: 5s
+    lambda: 'return id(redodo_voltage).state * id(redodo_current).state;'
+
   - platform: jbd_bms_ble
     voltage:
+      id: redodo_voltage
       name: "Redodo Total Voltage"
       filters:
         - throttle: 5s
     current:
+      id: redodo_current
       name: "Redodo Current"
       filters:
         - throttle: 5s
-    temperature:
-      name: "Redodo Temp 1"
+    cell_temperature:
+      name: "Redodo Cell Temp"
+      filters:
+        - throttle: 5s
+    mosfet_temperature:
+      name: "Redodo Mosfet Temp"
       filters:
         - throttle: 5s
     soc:
       name: "Redodo SOC"
       filters:
         - throttle: 5s
+    soh:
+      name: "Redodo SOH"
+      filters:
+        - throttle: 5s
     cycles:
       name: "Redodo Cycles"
+      filters:
+        - throttle: 5s
+    equilibriumstate:
+      name: "Redodo Equilibrium State"
+      filters:
+        - throttle: 5s
+    batterystate:
+      name: "Redodo Battery State"
+      filters:
+        - throttle: 5s
+    charge:
+      name: "Redodo Charge Ah"
+      filters:
+        - throttle: 5s
+    capacity:
+      name: "Redodo Capacity Ah"
       filters:
         - throttle: 5s
     cells:
