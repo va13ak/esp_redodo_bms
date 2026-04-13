@@ -1,9 +1,9 @@
-# ESPHome JBD/Redodo BMS Monitor (BLE)
+# ESPHome JBD (Redodo / PowerQueen) BMS Monitor (BLE)
 
 This project provides a robust ESPHome integration for monitoring **Redodo LiFePO4 batteries** and other **JBD-based BMS** (Jiabaida) via Bluetooth Low Energy. It is compatible with both **12V and 24V** configurations.
 
 ## Supported Hardware
-* **Batteries**: Redodo 12V/24V LiFePO4 with Bluetooth, or any battery using JBD BMS.
+* **Batteries**: Redodo & PowerQueen 12V/24V LiFePO4 with Bluetooth, or any battery using JBD BMS.
 * **Controller**: ESP32 (DevKit V1, WROOM, etc.) - Bluetooth is required.
 
 ## Features
@@ -27,3 +27,5 @@ This project provides a robust ESPHome integration for monitoring **Redodo LiFeP
 ## Credits & Acknowledgments
 * This project is based on the [BMS_BLE-HA](https://github.com/patman15/BMS_BLE-HA/) repository by **patman15**.
 * Technical architecture, security hardening (secrets management), and documentation assisted by **Gemini (Google AI)**.
+* Support for SOH (State of Health) and full capacity monitoring added by **aiolos**.
+* Verified compatibility with PowerQueen 24V batteries (thanks to **aiolos**).
