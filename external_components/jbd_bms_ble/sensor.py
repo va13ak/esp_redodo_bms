@@ -8,9 +8,11 @@ from esphome.const import (
 )
 from . import jbd_bms_ble_ns, JbdBmsBle
 
+CONF_JBD_BMS_BLE_ID = "jbd_bms_ble_id"
+
 # Описуємо, які ключі можна писати в YAML
 CONFIG_SCHEMA = cv.Schema({
-    cv.GenerateID(CONF_ID): cv.use_id(JbdBmsBle),
+    cv.GenerateID(CONF_JBD_BMS_BLE_ID): cv.use_id(JbdBmsBle),
     cv.Optional("voltage"): sensor.sensor_schema(unit_of_measurement=UNIT_VOLT, device_class=DEVICE_CLASS_VOLTAGE, accuracy_decimals=2),
     cv.Optional("current"): sensor.sensor_schema(unit_of_measurement=UNIT_AMPERE, device_class=DEVICE_CLASS_CURRENT, accuracy_decimals=2),
     cv.Optional("cell_temperature"): sensor.sensor_schema(unit_of_measurement=UNIT_CELSIUS, device_class=DEVICE_CLASS_TEMPERATURE, accuracy_decimals=1),
@@ -26,7 +28,7 @@ CONFIG_SCHEMA = cv.Schema({
 })
 
 async def to_code(config):
-    hub = await cg.get_variable(config[CONF_ID])
+    hub = await cg.get_variable(config[CONF_JBD_BMS_BLE_ID])
     
     # Обробка стандартних сенсорів
     for key in ["voltage", "current", "mosfet_temperature", "cell_temperature", "soc", "soh", "cycles", "equilibriumstate", "batterystate", "charge", "capacity"]:
